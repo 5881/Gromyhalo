@@ -8,6 +8,5 @@ echo `pwd`.
 killall aplay
 for i in *.py
 do #убиваем всё кроме server.py
-    [ $i != "server.py" ] && killall $i 2>/dev/null
-    echo $i is killed
+    [ $i != "server.py" ] && killall $i 2>/dev/null && echo $i is killed
 done 

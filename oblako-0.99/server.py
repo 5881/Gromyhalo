@@ -11,11 +11,11 @@ from time import sleep
 sock = socket.socket()
 sock.bind(('', 9090))
 sock.listen(1)
-if sys.argv[1]:
-	folder=sys.argv[1]
-	print(folder)
-else:
-	folder="/home/alarm/oblako/" #Жестко заданная дириктория скрипта!
+#if sys.argv[1]:
+#	folder=sys.argv[1]
+#	print(folder)
+#else:
+folder="/home/alarm/oblako/" #Жестко заданная дириктория скрипта!
 #Задавать полный путь важно для корректной работы service юнита
 #server.service
 while True:
@@ -23,9 +23,10 @@ while True:
 	print ('connected:', addr)
 	while True:
 		data = conn.recv(1024)
-		os.system(folder+"kill.sh "+folder)
 		if not data:
 			break
+		print(">>> ", data) 
+		os.system(folder+"kill.sh "+folder)
 		if b"grom" in data:
 			print("выполнена команда grom мигаем пару раз шумим")
 			os.system(folder+"analyse-2.0.py "+folder+"17-1.wav &")
@@ -39,12 +40,17 @@ while True:
 			os.system(folder+"rgb_path_02.py &")
 			conn.send(b'ok')
 		if b"command 4" in data:
-			print("выполнена комманда rgb_path_03.py")
-			os.system(folder+"rgb_path_03.py &")
+			print("выполнена комманда rgb_path_05.py")
+			os.system(folder+"rgb_path_05.py &")
 			conn.send(b'ok')
 		if b"command 5" in data:
 			print("выполнена команда 5")
 			os.system(folder+"make_it_color.py &")
+			conn.send(b'ok')
+		#комманда ниже отправляются telnet
+		if b"command 6" in data:
+			print("выполнена команда 5")
+			os.system(folder+"rgb_path_03.py &")
 			conn.send(b'ok')
 		#conn.send(data.upper())
 	conn.close()
